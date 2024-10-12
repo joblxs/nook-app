@@ -1,5 +1,5 @@
 <template>
-hello world
+  <div class="wow animate__animated animate__bounceIn" >hello world</div>
 </template>
 
 <script>
