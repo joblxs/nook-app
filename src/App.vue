@@ -1,4 +1,7 @@
 <template>
+  <!--背景-->
+  <object class="background-iframe" data="/theme/background/BackgroundLight.html" type="text/html"></object>
+
   <lay-config-provider :theme="theme">
     <router-view />
   </lay-config-provider>
@@ -34,6 +37,8 @@ export default {
     // 切换主题
     function toggleTheme() {
       theme.value = theme.value === 'light' ? 'dark' : 'light';
+      const backgroundIframe = document.querySelector('.background-iframe');
+      backgroundIframe.data = theme.value === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html'
     }
     return { theme, toggleTheme };
   }
@@ -41,4 +46,23 @@ export default {
 </script>
 
 <style>
+* {margin: 0;padding: 0}
+body {
+  opacity: 0.9;
+  font-family:"Microsoft YaHei"
+}
+@font-face {
+  font-family: 'BarbaraHand';
+  src: url('@/assets/fonts/barbarahand-webfont.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+.background-iframe {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+}
 </style>

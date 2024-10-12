@@ -1,9 +1,21 @@
 <template>
-  <div class="wow animate__animated animate__bounceIn" >hello world</div>
+  <!--横幅-->
+  <Banner />
 </template>
 
 <script>
+import Banner from "@/components/module/BannerHome.vue";
 
+export default {
+  components: {
+    Banner
+  },
+  mounted() {
+    document.title = '主页';
+    document.querySelector('meta[name="keywords"]').setAttribute('content', '主页，个人网站，好看的个人主页');
+    document.querySelector('meta[name="description"]').setAttribute('content', '个人主页搭建');
+  }
+}
 </script>
 
 <style scoped>
