@@ -1,14 +1,17 @@
 <template>
   <!--横幅-->
-  <Banner />
+  <BannerHome />
+  <!--站点-->
+  <StationHome />
 </template>
 
 <script>
-import Banner from "@/components/module/BannerHome.vue";
+import BannerHome from "@/components/module/BannerHome.vue";
+import StationHome from "@/components/module/StationHome.vue";
 
 export default {
   components: {
-    Banner
+    BannerHome, StationHome
   },
   mounted() {
     document.title = '主页';

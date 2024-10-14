@@ -34,7 +34,7 @@ export default {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-color: var(--5-background-color);
+  background-color: var(--5-background-rgba);
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;
@@ -64,7 +64,7 @@ export default {
   cursor: pointer;
 }
 .next:hover {
-  background-color: #6bc30d;
+  background-color: var(--background-color);
 }
 .next:before {
   font-size: 3rem;

@@ -1,15 +1,17 @@
 :root {
     --font-color: #000;
+    --background-color: #6bc30d;
+    --border-color: #b4b4b4;
 
     /*透明度*/
-    --1-background-color: rgba(230, 230, 230, .1);
-    --2-background-color: rgba(230, 230, 230, .2);
-    --3-background-color: rgba(230, 230, 230, .3);
-    --4-background-color: rgba(230, 230, 230, .4);
-    --5-background-color: rgba(230, 230, 230, .5);
-    --6-background-color: rgba(230, 230, 230, .6);
-    --7-background-color: rgba(230, 230, 230, .7);
-    --8-background-color: rgba(230, 230, 230, .8);
-    --9-background-color: rgba(230, 230, 230, .9);
-    --10-background-color: rgba(230, 230, 230, 1);
+    --1-background-rgba: rgba(230, 230, 230, .1);
+    --2-background-rgba: rgba(230, 230, 230, .2);
+    --3-background-rgba: rgba(230, 230, 230, .3);
+    --4-background-rgba: rgba(230, 230, 230, .4);
+    --5-background-rgba: rgba(230, 230, 230, .5);
+    --6-background-rgba: rgba(230, 230, 230, .6);
+    --7-background-rgba: rgba(230, 230, 230, .7);
+    --8-background-rgba: rgba(230, 230, 230, .8);
+    --9-background-rgba: rgba(230, 230, 230, .9);
+    --10-background-rgba: rgba(230, 230, 230, 1);
 }
