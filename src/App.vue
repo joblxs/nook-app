@@ -141,6 +141,23 @@ export default {
     return { theme, toggleTheme, backgroundIframeSrc, showBackground, toggleBackground };
   }
 }
+// 使用防抖函数（debounce）来延迟处理 ResizeObserver 的回调函数，以避免频繁触发重排（reflow）或重绘（repaint）
+const debounce = (fn, delay) => {
+  let timer;
+  return (...args) => {
+    if (timer) clearTimeout(timer);
+    timer = setTimeout(() => {
+      fn(...args);
+    }, delay);
+  };
+};
+const _ResizeObserver = window.ResizeObserver;
+window.ResizeObserver = class ResizeObserver extends _ResizeObserver {
+  constructor(callback) {
+    callback = debounce(callback, 200);
+    super(callback);
+  }
+};
 </script>
 
 <style>
