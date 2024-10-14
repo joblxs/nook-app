@@ -127,4 +127,17 @@ body {
   height: 100vh;
   z-index: -1;
 }
+/* 定义滚动条的宽度 */
+::-webkit-scrollbar {
+  width: 8px;
+}
+/* 定义滚动条的轨道颜色 */
+::-webkit-scrollbar-track {
+  background-color: var(--border-color);
+}
+/* 定义滚动条的滑块颜色 */
+::-webkit-scrollbar-thumb {
+  background-color: var(--background-color);
+  transition: background-color 0.3s ease;
+}
 </style>
