@@ -8,11 +8,11 @@
   </lay-config-provider>
 
   <lay-tooltip position="left-start" content="返回顶部">
-    <lay-backtop :bottom="180" circle size="small" bgcolor="#5FB878" iconSize="22" icon="layui-icon-top" ></lay-backtop>
+    <lay-backtop :bottom="200" circle size="small" bgcolor="#5FB878" iconSize="22" icon="layui-icon-top" ></lay-backtop>
   </lay-tooltip>
 
   <lay-tooltip position="left-start" content="切换主题">
-    <lay-backtop @click="toggleTheme" :bottom="140" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="theme === 'dark' ? 'layui-icon-light' : 'layui-icon-moon'" disabled></lay-backtop>
+    <lay-backtop @click="toggleTheme" :bottom="150" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="theme === 'dark' ? 'layui-icon-light' : 'layui-icon-moon'" disabled></lay-backtop>
   </lay-tooltip>
 
   <lay-tooltip position="left-start" :content="showBackground ? '关闭背景' : '打开背景'">
@@ -120,25 +120,13 @@ export default {
     };
 
     // 清理localStorage中的过期主题设置
-    const clearExpiredThemes = () => {
-      const savedData = localStorage.getItem('user-theme');
+    const clearExpiredItems = (key) => {
+      const savedData = localStorage.getItem(key);
       if (savedData) {
         const { expires } = JSON.parse(savedData);
         const currentTime = new Date().getTime();
         if (expires && expires < currentTime) {
-          localStorage.removeItem('user-theme');
-        }
-      }
-    };
-
-    // 组件卸载时清理过期背景显示状态
-    const clearExpiredBackgrounds = () => {
-      const savedData = localStorage.getItem('background-show');
-      if (savedData) {
-        const { expires } = JSON.parse(savedData);
-        const currentTime = new Date().getTime();
-        if (expires && expires < currentTime) {
-          localStorage.removeItem('background-show');
+          localStorage.removeItem(key);
         }
       }
     };
@@ -146,9 +134,9 @@ export default {
     // 组件卸载时清理过期主题设置
     onMounted(() => {
       loadThemeFromStorage(); // 加载主题
-      clearExpiredThemes(); // 清理过期主题
       loadBackgroundFromStorage(); // 加载背景显示状态
-      clearExpiredBackgrounds(); // 清理过期背景显示状态
+      clearExpiredItems('user-theme');
+      clearExpiredItems('background-show');
     });
     return { theme, toggleTheme, backgroundIframeSrc, showBackground, toggleBackground };
   }
@@ -184,8 +172,10 @@ body {
   background-color: var(--border-color);
 }
 /* 定义滚动条的滑块颜色 */
-::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb, ::-webkit-scrollbar-thumb:hover {
   background-color: var(--background-color);
   transition: background-color 0.3s ease;
+  cursor: pointer;
+  border-radius: 20%;
 }
 </style>
