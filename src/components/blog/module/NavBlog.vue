@@ -34,7 +34,6 @@
 
 <script>
 export default {
-  name: 'NavCommon',
   data() {
     return {
       menuItems: [
