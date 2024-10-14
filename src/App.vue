@@ -1,6 +1,6 @@
 <template>
   <!--背景-->
-  <object class="background-iframe" data="/theme/background/BackgroundLight.html" type="text/html"></object>
+  <object :class="`background-iframe ${theme}`" :data="backgroundIframeSrc" type="text/html"></object>
 
   <lay-config-provider :theme="theme">
     <router-view />
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {ref, onMounted, onUnmounted } from 'vue';
+import {ref, onMounted } from 'vue';
 import WOW from 'wow.js';
 import darkTheme from '../public/theme/css/globalDark.css';
 import lightTheme from '../public/theme/css/globalLight.css';
@@ -36,6 +36,7 @@ export default {
   },
   setup() {
     const theme = ref('light')
+    const backgroundIframeSrc = ref('/theme/background/BackgroundDark.html');
 
     // 从localStorage加载主题设置
     const loadThemeFromStorage = () => {
@@ -48,23 +49,30 @@ export default {
         } else {
           // 如果没有设置，或者设置已过期，则根据当前时间设置默认主题
           const currentHour = new Date().getHours();
-          if (currentHour >= 6 && currentHour < 18) {
-            applyTheme('light'); // 白天使用亮色主题
-          } else {
-            applyTheme('dark'); // 夜晚使用暗色主题
-          }
+          applyTheme(currentHour >= 6 && currentHour < 18 ? 'light' : 'dark');
         }
+      } else {
+        // 如果没有设置，或者设置已过期，则根据当前时间设置默认主题
+        const currentHour = new Date().getHours();
+        applyTheme(currentHour >= 6 && currentHour < 18 ? 'light' : 'dark');
       }
     };
     // 应用主题到页面
     const applyTheme = (newTheme) => {
+      console.log('12344', newTheme)
       theme.value = newTheme;
+      backgroundIframeSrc.value = newTheme === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html';
+
+      // 移除旧的<style>元素
+      const oldStyle = document.querySelector('#dynamic-theme-style');
+      if (oldStyle) {
+        document.head.removeChild(oldStyle);
+      }
+      // 添加新的<style>元素
       const styleElement = document.createElement('style');
+      styleElement.id = 'dynamic-theme-style';
       styleElement.textContent = newTheme === 'light' ? lightTheme : darkTheme;
       document.head.appendChild(styleElement);
-
-      const backgroundIframe = document.querySelector('.background-iframe');
-      backgroundIframe.data = newTheme === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html';
 
       // 保存主题设置到localStorage，并设置12小时后过期
       const expires = new Date().getTime() + 12 * 60 * 60 * 1000; // 12小时后的时间戳
@@ -76,9 +84,6 @@ export default {
       const newTheme = theme.value === 'light' ? 'dark' : 'light';
       applyTheme(newTheme);
     };
-
-    // 在组件挂载前加载主题
-    onMounted(loadThemeFromStorage);
 
     // 清理localStorage中的过期主题设置
     const clearExpiredThemes = () => {
@@ -93,8 +98,11 @@ export default {
     };
 
     // 组件卸载时清理过期主题设置
-    onUnmounted(clearExpiredThemes);
-    return { theme, toggleTheme };
+    onMounted(() => {
+      loadThemeFromStorage(); // 加载主题
+      clearExpiredThemes(); // 清理过期主题
+    });
+    return { theme, toggleTheme, backgroundIframeSrc };
   }
 }
 </script>
