@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import {ref} from 'vue';
+import {ref, onMounted, onUnmounted } from 'vue';
 import WOW from 'wow.js';
 import darkTheme from '../public/theme/css/globalDark.css';
 import lightTheme from '../public/theme/css/globalLight.css';
@@ -36,14 +36,64 @@ export default {
   },
   setup() {
     const theme = ref('light')
-    const styleElement = document.createElement('style');
-    // 切换主题
-    function toggleTheme() {
-      theme.value = theme.value === 'light' ? 'dark' : 'light';
-      styleElement.textContent = theme.value === 'light' ? lightTheme : darkTheme;
+
+    // 从localStorage加载主题设置
+    const loadThemeFromStorage = () => {
+      const savedData = localStorage.getItem('user-theme');
+      if (savedData) {
+        const { theme: savedTheme, expires } = JSON.parse(savedData);
+        const currentTime = new Date().getTime();
+        if (savedTheme && expires && expires > currentTime) {
+          applyTheme(savedTheme);
+        } else {
+          // 如果没有设置，或者设置已过期，则根据当前时间设置默认主题
+          const currentHour = new Date().getHours();
+          if (currentHour >= 6 && currentHour < 18) {
+            applyTheme('light'); // 白天使用亮色主题
+          } else {
+            applyTheme('dark'); // 夜晚使用暗色主题
+          }
+        }
+      }
+    };
+    // 应用主题到页面
+    const applyTheme = (newTheme) => {
+      theme.value = newTheme;
+      const styleElement = document.createElement('style');
+      styleElement.textContent = newTheme === 'light' ? lightTheme : darkTheme;
+      document.head.appendChild(styleElement);
+
       const backgroundIframe = document.querySelector('.background-iframe');
-      backgroundIframe.data = theme.value === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html'
-    }
+      backgroundIframe.data = newTheme === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html';
+
+      // 保存主题设置到localStorage，并设置12小时后过期
+      const expires = new Date().getTime() + 12 * 60 * 60 * 1000; // 12小时后的时间戳
+      localStorage.setItem('user-theme', JSON.stringify({ theme: newTheme, expires }));
+    };
+
+    // 切换主题
+    const toggleTheme = () => {
+      const newTheme = theme.value === 'light' ? 'dark' : 'light';
+      applyTheme(newTheme);
+    };
+
+    // 在组件挂载前加载主题
+    onMounted(loadThemeFromStorage);
+
+    // 清理localStorage中的过期主题设置
+    const clearExpiredThemes = () => {
+      const savedData = localStorage.getItem('user-theme');
+      if (savedData) {
+        const { expires } = JSON.parse(savedData);
+        const currentTime = new Date().getTime();
+        if (expires && expires < currentTime) {
+          localStorage.removeItem('user-theme');
+        }
+      }
+    };
+
+    // 组件卸载时清理过期主题设置
+    onUnmounted(clearExpiredThemes);
     return { theme, toggleTheme };
   }
 }
