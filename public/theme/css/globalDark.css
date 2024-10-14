@@ -1,0 +1,15 @@
+:root {
+    --font-color: #fff;
+
+    /*透明度*/
+    --1-background-color: rgba(100, 100, 100, .1);
+    --2-background-color: rgba(100, 100, 100, .2);
+    --3-background-color: rgba(100, 100, 100, .3);
+    --4-background-color: rgba(100, 100, 100, .4);
+    --5-background-color: rgba(100, 100, 100, .5);
+    --6-background-color: rgba(100, 100, 100, .6);
+    --7-background-color: rgba(100, 100, 100, .7);
+    --8-background-color: rgba(100, 100, 100, .8);
+    --9-background-color: rgba(100, 100, 100, .9);
+    --10-background-color: rgba(100, 100, 100, 1);
+}

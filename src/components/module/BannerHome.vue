@@ -34,7 +34,7 @@ export default {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-color: rgba(100, 100, 100, .5);
+  background-color: var(--5-background-color);
   background-position: center;
   background-attachment: fixed;
   background-repeat: no-repeat;

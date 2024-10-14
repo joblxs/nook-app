@@ -18,6 +18,8 @@
 <script>
 import {ref} from 'vue';
 import WOW from 'wow.js';
+import darkTheme from '../public/theme/css/globalDark.css';
+import lightTheme from '../public/theme/css/globalLight.css';
 
 export default {
   name: 'App',
@@ -34,9 +36,11 @@ export default {
   },
   setup() {
     const theme = ref('light')
+    const styleElement = document.createElement('style');
     // 切换主题
     function toggleTheme() {
       theme.value = theme.value === 'light' ? 'dark' : 'light';
+      styleElement.textContent = theme.value === 'light' ? lightTheme : darkTheme;
       const backgroundIframe = document.querySelector('.background-iframe');
       backgroundIframe.data = theme.value === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html'
     }
