@@ -151,7 +151,6 @@ export default {
   width: 100%;
   background: var(--7-background-rgba);
   clip-path: polygon(0 120px, 0 0, 100% 0, 100% 120px, 50% 100%);
-  color: var(--font-color);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -188,7 +187,6 @@ export default {
 .article-item .recent-post-title {
   width: 100%;
   margin-top: 25px;
-  color: var(--font-color);
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 1;

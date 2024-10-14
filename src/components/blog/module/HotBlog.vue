@@ -54,10 +54,6 @@
     text-overflow: ellipsis
 }
 
-.hot-list-article li a {
-    color: var(--font-color);
-}
-
 .hot-list-article li:before {
     width: 22px;
     height: 22px;
