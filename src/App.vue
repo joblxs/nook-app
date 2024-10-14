@@ -13,6 +13,7 @@
   <lay-tooltip position="left-start" content="切换主题">
     <lay-backtop @click="toggleTheme" :bottom="100" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="theme === 'dark' ? 'layui-icon-light' : 'layui-icon-moon'" disabled></lay-backtop>
   </lay-tooltip>
+  <FpsCounter />
 </template>
 
 <script>
@@ -20,9 +21,13 @@ import {ref, onMounted } from 'vue';
 import WOW from 'wow.js';
 import darkTheme from '../public/theme/css/globalDark.css';
 import lightTheme from '../public/theme/css/globalLight.css';
+import FpsCounter from './utils/FpsCounter.vue'
 
 export default {
   name: 'App',
+  components: {
+    FpsCounter
+  },
   mounted() {
     new WOW({
       boxClass: "wow", // 需要执行动画的元素的class
