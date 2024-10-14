@@ -1,26 +1,28 @@
 <template>
+  <FpsCounter />
   <!--背景-->
-  <object :class="`background-iframe ${theme}`" :data="backgroundIframeSrc" type="text/html"></object>
+  <object :class="`background-iframe ${theme}`" :data="backgroundIframeSrc" type="text/html" v-show="showBackground"></object>
 
   <lay-config-provider :theme="theme">
     <router-view />
   </lay-config-provider>
 
   <lay-tooltip position="left-start" content="返回顶部">
-    <lay-backtop :bottom="140" circle size="small" bgcolor="#5FB878" iconSize="22" icon="layui-icon-top" ></lay-backtop>
+    <lay-backtop :bottom="180" circle size="small" bgcolor="#5FB878" iconSize="22" icon="layui-icon-top" ></lay-backtop>
   </lay-tooltip>
 
   <lay-tooltip position="left-start" content="切换主题">
-    <lay-backtop @click="toggleTheme" :bottom="100" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="theme === 'dark' ? 'layui-icon-light' : 'layui-icon-moon'" disabled></lay-backtop>
+    <lay-backtop @click="toggleTheme" :bottom="140" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="theme === 'dark' ? 'layui-icon-light' : 'layui-icon-moon'" disabled></lay-backtop>
   </lay-tooltip>
-  <FpsCounter />
+
+  <lay-tooltip position="left-start" :content="showBackground ? '关闭背景' : '打开背景'">
+    <lay-backtop @click="toggleBackground" :bottom="100" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="showBackground ? 'layui-icon-eye-invisible' : 'layui-icon-eye'" disabled></lay-backtop>
+  </lay-tooltip>
 </template>
 
 <script>
 import {ref, onMounted } from 'vue';
 import WOW from 'wow.js';
-import darkTheme from '../public/theme/css/globalDark.css';
-import lightTheme from '../public/theme/css/globalLight.css';
 import FpsCounter from './utils/FpsCounter.vue'
 
 export default {
@@ -42,6 +44,7 @@ export default {
   setup() {
     const theme = ref('light')
     const backgroundIframeSrc = ref('/theme/background/BackgroundLight.html');
+    const showBackground = ref(true);
 
     // 从localStorage加载主题设置
     const loadThemeFromStorage = () => {
@@ -68,15 +71,15 @@ export default {
       backgroundIframeSrc.value = newTheme === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html';
 
       // 移除旧的<style>元素
-      const oldStyle = document.querySelector('#dynamic-theme-style');
-      if (oldStyle) {
-        document.head.removeChild(oldStyle);
+      const currentLink = document.getElementById('dynamic-theme');
+      if (currentLink) {
+        document.head.removeChild(currentLink);
       }
-      // 添加新的<style>元素
-      const styleElement = document.createElement('style');
-      styleElement.id = 'dynamic-theme-style';
-      styleElement.textContent = newTheme === 'light' ? lightTheme : darkTheme;
-      document.head.appendChild(styleElement);
+      const link = document.createElement('link');
+      link.id = 'dynamic-theme';
+      link.rel = 'stylesheet';
+      link.href = `/theme/css/${newTheme}.css`;
+      document.head.appendChild(link);
 
       // 保存主题设置到localStorage，并设置12小时后过期
       const expires = new Date().getTime() + 12 * 60 * 60 * 1000; // 12小时后的时间戳
@@ -87,6 +90,33 @@ export default {
     const toggleTheme = () => {
       const newTheme = theme.value === 'light' ? 'dark' : 'light';
       applyTheme(newTheme);
+    };
+
+    const toggleBackground = () => {
+      const newShowBackground = !showBackground.value; // 切换背景显示状态
+      showBackground.value = newShowBackground;
+      // 保存背景显示状态到localStorage，并设置12小时后过期
+      const expires = new Date().getTime() + 12 * 60 * 60 * 1000; // 12小时后的时间戳
+      localStorage.setItem('background-show', JSON.stringify({ show: newShowBackground, expires }));
+    };
+
+    // 从localStorage加载背景显示状态
+    const loadBackgroundFromStorage = () => {
+      const savedData = localStorage.getItem('background-show');
+      if (savedData) {
+        const { show, expires } = JSON.parse(savedData);
+        const currentTime = new Date().getTime();
+        if (!show && expires && expires > currentTime) {
+          showBackground.value = show;
+        } else {
+          // 如果设置已过期或没有设置，则默认显示背景
+          showBackground.value = true;
+          localStorage.removeItem('background-show');
+        }
+      } else {
+        // 如果没有设置，则默认显示背景
+        showBackground.value = true;
+      }
     };
 
     // 清理localStorage中的过期主题设置
@@ -101,12 +131,26 @@ export default {
       }
     };
 
+    // 组件卸载时清理过期背景显示状态
+    const clearExpiredBackgrounds = () => {
+      const savedData = localStorage.getItem('background-show');
+      if (savedData) {
+        const { expires } = JSON.parse(savedData);
+        const currentTime = new Date().getTime();
+        if (expires && expires < currentTime) {
+          localStorage.removeItem('background-show');
+        }
+      }
+    };
+
     // 组件卸载时清理过期主题设置
     onMounted(() => {
       loadThemeFromStorage(); // 加载主题
       clearExpiredThemes(); // 清理过期主题
+      loadBackgroundFromStorage(); // 加载背景显示状态
+      clearExpiredBackgrounds(); // 清理过期背景显示状态
     });
-    return { theme, toggleTheme, backgroundIframeSrc };
+    return { theme, toggleTheme, backgroundIframeSrc, showBackground, toggleBackground };
   }
 }
 </script>
