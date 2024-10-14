@@ -1,4 +1,5 @@
 <template>
+  <NavHome />
   <!--横幅-->
   <BannerHome />
   <!--站点-->
@@ -10,6 +11,7 @@
 </template>
 
 <script>
+import NavHome from "@/components/module/NavHome.vue";
 import BannerHome from "@/components/module/BannerHome.vue";
 import StationHome from "@/components/module/StationHome.vue";
 import HitokotoHome from "@/components/module/HitokotoHome.vue";
@@ -17,7 +19,7 @@ import FooterHome from "@/components/module/FooterHome.vue";
 
 export default {
   components: {
-    BannerHome, StationHome, HitokotoHome, FooterHome
+    NavHome, BannerHome, StationHome, HitokotoHome, FooterHome
   },
   mounted() {
     document.title = '主页';

@@ -36,7 +36,7 @@ export default {
   },
   setup() {
     const theme = ref('light')
-    const backgroundIframeSrc = ref('/theme/background/BackgroundDark.html');
+    const backgroundIframeSrc = ref('/theme/background/BackgroundLight.html');
 
     // 从localStorage加载主题设置
     const loadThemeFromStorage = () => {
@@ -59,7 +59,6 @@ export default {
     };
     // 应用主题到页面
     const applyTheme = (newTheme) => {
-      console.log('12344', newTheme)
       theme.value = newTheme;
       backgroundIframeSrc.value = newTheme === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html';
 

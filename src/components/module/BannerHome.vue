@@ -39,19 +39,23 @@ export default {
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
+
 .nav {
   text-align: center;
   margin: 0 auto;
   max-width: 800px;
 }
+
 .nav h1 {
   font-size: 2.5rem;
 }
+
 .nav p {
   font-size: 1rem;
   letter-spacing: 0.5rem;
   margin: 1rem 0;
 }
+
 .next {
   width: 3rem;
   height: 3rem;
@@ -63,27 +67,33 @@ export default {
   transition: all .5s ease-out;
   cursor: pointer;
 }
+
 .next:hover {
   background-color: var(--background-color);
 }
+
 .next:before {
   font-size: 3rem;
   display: table;
   margin: 0 auto;
 }
+
 @media (max-width: 768px) {
   .nav h1 {
     font-size: 2rem;
   }
+
   .nav p {
     font-size: 0.9rem;
     letter-spacing: 0.3rem;
   }
 }
+
 @media (max-width: 480px) {
   .nav h1 {
     font-size: 1.5rem;
   }
+
   .nav p {
     font-size: 0.8rem;
     letter-spacing: 0.2rem;
