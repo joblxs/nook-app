@@ -3,15 +3,18 @@
   <BannerHome />
   <!--站点-->
   <StationHome />
+  <!--一言-->
+  <HitokotoHome />
 </template>
 
 <script>
 import BannerHome from "@/components/module/BannerHome.vue";
 import StationHome from "@/components/module/StationHome.vue";
+import HitokotoHome from "@/components/module/HitokotoHome.vue";
 
 export default {
   components: {
-    BannerHome, StationHome
+    BannerHome, StationHome, HitokotoHome
   },
   mounted() {
     document.title = '主页';

@@ -57,7 +57,7 @@ export default {
     position: relative;
     text-align: center;
     overflow: hidden;
-    //background-color: var(--3-background-color);
+    //background-color: var(--3-background-rgba);
 }
 
 .links li a {
