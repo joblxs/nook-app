@@ -4,7 +4,7 @@
     <lay-tooltip position="left-start" content="导航">
       <lay-backtop @click="toggleMenu" style="top:50px;" circle size="medium" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="currentIcon" disabled></lay-backtop>
     </lay-tooltip>
-    <div class="navigation" :class="{ open: !menuClosed, closed: menuClosed }" ref="navigationElement">
+    <div class="navigation" :class="{ 'navigation-hidden': !isNavVisible }">
       <ul class="navigation-point">
         <li><a href="/">首页</a></li>
         <li><a href="/blog">博客</a></li>
@@ -15,25 +15,22 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 
 export default {
   setup() {
     const menuClosed = ref(true);
     const currentIcon = ref('layui-icon-shrink-right');
-    const navigationElement = ref(null);
+    const isNavVisible = ref(false);
 
     const toggleMenu = () => {
       menuClosed.value = !menuClosed.value;
       currentIcon.value = menuClosed.value ? 'layui-icon-shrink-right' : 'layui-icon-spread-left'; // 切换图标
+      isNavVisible.value = !menuClosed.value; // 切换导航的可见性
     };
 
-    onMounted(() => {
-      navigationElement.value = document.querySelector('.navigation');
-    });
-
     return {
-      menuClosed, toggleMenu, currentIcon, navigationElement
+      menuClosed, toggleMenu, currentIcon, isNavVisible
     };
   }
 }
@@ -47,9 +44,10 @@ export default {
   z-index: 101;
   background: var(--6-background-rgba);
   transition: transform 0.3s ease-in-out;
-  transform: translateX(100%); /* 初始状态为关闭 */
-  opacity: 0;
-  visibility: hidden;
+}
+
+.navigation-hidden {
+  transform: translateX(100%);
 }
 
 .navigation:before {
@@ -64,37 +62,6 @@ export default {
   top: 0;
   z-index: 11;
   right: 0
-}
-
-.navigation.open {
-  animation: slideIn 0.3s forwards;
-  transform: translateX(0); /* 确保动画结束后位置正确 */
-  opacity: 1; /* 确保动画结束后可见 */
-  visibility: visible; /* 确保动画结束后可见 */
-}
-
-.navigation.closed {
-  animation: slideOut 0.3s forwards;
-  opacity: 0;
-  visibility: hidden;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideOut {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(100%);
-  }
 }
 
 .navigation-point {
