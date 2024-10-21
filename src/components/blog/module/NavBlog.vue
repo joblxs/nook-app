@@ -95,6 +95,13 @@ export default {
 </script>
 
 <style scoped>
+.header-fixed {
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
 .container {
   width: 100%;
   min-height: 60px;
@@ -275,7 +282,7 @@ export default {
 }
 
 @media screen and (max-width: 1366px) {
-  .container-fixed {
+  .header-fixed {
     width: 90%
   }
 
@@ -293,7 +300,7 @@ export default {
     left: 0
   }
 
-  .container-fixed {
+  .header-fixed {
     width: 90%
   }
 

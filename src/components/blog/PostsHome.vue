@@ -1,12 +1,27 @@
 <template>
-  <div id="markdown-container" ></div>
+  <!--导航-->
+  <NavBlog />
+  <div class="container-fixed" style="margin-top: 90px">
+    <div class="col-content">
+      <div id="markdown-container"></div>
+    </div>
+    <div style="clear: both"></div>
+  </div>
+  <!--底部-->
+  <FooterHome />
 </template>
 
 <script>
 import 'cherry-markdown/dist/cherry-markdown.css';
 import Cherry from 'cherry-markdown';
+import NavBlog from "@/components/blog/module/NavBlog.vue";
+import FooterHome from "@/components/module/FooterHome.vue";
 
 export default {
+  components: {
+    FooterHome,
+    NavBlog
+  },
   mounted() {
     new Cherry({
       id: 'markdown-container',
@@ -39,5 +54,43 @@ export default {
 </script>
 
 <style scoped>
+.container-fixed {
+  max-width: 1200px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
+.col-content {
+  float: left;
+  width: calc(100% - 300px - 20px);
+}
+
+.col-other {
+  float: right;
+  width: 300px
+}
+
+@media screen and (max-width: 1366px) {
+  .container-fixed {
+    width: 90%
+  }
+}
+
+@media screen and (max-width: 1024px) {
+  .col-content, .col-other {
+    width: 100%;
+    float: none
+  }
+
+  .container-fixed {
+    width: 90%
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .col-content, .col-other {
+    padding: 0 0
+  }
+}
 </style>

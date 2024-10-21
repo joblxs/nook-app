@@ -2,7 +2,7 @@
   <!--导航-->
   <NavBlog />
   <!--内容-->
-  <div class="container-fixed" style="margin-top: 60px">
+  <div class="container-fixed" style="margin-top: 90px">
     <!--博客列表-->
     <div class="col-content">
       <ListBlog />
@@ -34,13 +34,12 @@ export default {
 }
 </script>
 
-<style>
-.header-fixed, .container-fixed {
+<style scoped>
+.container-fixed {
   max-width: 1200px;
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  position: relative;
 }
 
 .col-content {
@@ -54,7 +53,7 @@ export default {
 }
 
 @media screen and (max-width: 1366px) {
-  .header-fixed, .container-fixed {
+  .container-fixed {
     width: 90%
   }
 }
@@ -65,7 +64,7 @@ export default {
     float: none
   }
 
-  .header-fixed, .container-fixed {
+  .container-fixed {
     width: 90%
   }
 }

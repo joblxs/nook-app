@@ -123,7 +123,6 @@ export default {
 .article-item {
   overflow: hidden;
   position: relative;
-  margin-top: 20px;
   border-radius: 5%;
   background: var(--5-background-rgba);
   transition: box-shadow 0.3s ease-in-out;

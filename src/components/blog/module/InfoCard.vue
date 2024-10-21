@@ -25,7 +25,6 @@
 <style scoped>
 .card{
     position: relative;
-    margin-top: 20px;
     margin-bottom: 20px;
     overflow: hidden;
     text-align: center;
