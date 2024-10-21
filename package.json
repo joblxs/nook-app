@@ -10,6 +10,7 @@
   "dependencies": {
     "@layui/layui-vue": "^2.18.3",
     "animate.css": "^4.1.1",
+    "cherry-markdown": "^0.8.49",
     "core-js": "^3.8.3",
     "nprogress": "^0.2.0",
     "vue": "^3.2.13",

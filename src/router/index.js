@@ -15,6 +15,11 @@ const routes = [
         name: 'Blog',
         component: () => import('../components/blog/BlogHome.vue')
     },
+    {
+        path: '/posts',
+        name: 'Posts',
+        component: () => import('../components/blog/PostsHome.vue')
+    },
     // 404页面
     {
         path: '/:catchAll(.*)', // 捕获所有未匹配的路由

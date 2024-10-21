@@ -4,7 +4,7 @@
       <lay-col v-for="(blog, index) in blogItems" :key="index" md="12" sm="12" xs="24">
         <div class="article-item wow animate__animated animate__zoomIn">
           <div class="fc-flag">置顶</div>
-          <a href="#" class="recent-post-summary">
+          <a href="/posts" class="recent-post-summary">
             <div class="summary">{{ blog.summary }}</div>
           </a>
           <div class="recent-post-title">
