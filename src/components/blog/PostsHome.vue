@@ -19,7 +19,7 @@ export default {
     FooterHome, NavBlog
   },
   mounted() {
-    new Cherry({
+    this.cherryInstance = new Cherry({
       id: 'markdown-container',
       value: '## hello #world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\nhello world\n' +
         '### 123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n123\n' +
@@ -45,7 +45,15 @@ export default {
         },
       }
     })
-    document.addEventListener('click', function(event) {
+    this.handleClick = this.handleClick.bind(this);
+    document.addEventListener('click', this.handleClick);
+  },
+  beforeUnmount() {
+    // 在组件销毁前移除事件监听器
+    document.removeEventListener('click', this.handleClick);
+  },
+  methods: {
+    handleClick(event) {
       if (event.target.tagName === 'A' && event.target.getAttribute('data-id')) {
         event.preventDefault();
         const targetId = event.target.getAttribute('data-id').replace(/^#/, ""); // 获取锚点的目标ID
@@ -60,7 +68,7 @@ export default {
           });
         }
       }
-    })
+    }
   }
 }
 </script>
