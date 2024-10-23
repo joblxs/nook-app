@@ -3,9 +3,10 @@
     <div class="links">
       <ul>
         <li class="wow animate__animated animate__lightSpeedInLeft" v-for="(site, index) in siteItems" :key="index">
-          <a :href="site.link">
+          <router-link :to="site.link">
             <lay-icon :type="site.icon" style="margin-right: 10px;"></lay-icon>
-            {{ site.title }}</a>
+            {{ site.title }}
+          </router-link>
         </li>
       </ul>
     </div>

@@ -4,7 +4,9 @@
   <object :class="`background-iframe ${theme}`" :data="backgroundIframeSrc" type="text/html" v-show="showBackground"></object>
 
   <lay-config-provider :theme="theme">
-    <router-view />
+    <keep-alive>
+      <router-view />
+    </keep-alive>
   </lay-config-provider>
 
   <lay-tooltip position="left-start" content="返回顶部">

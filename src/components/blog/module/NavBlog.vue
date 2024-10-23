@@ -2,20 +2,19 @@
   <div class="container">
     <div class="header-fixed">
       <!-- 网站logo -->
-      <a href="javascript:void(0)" class="header-logo">Mr.li</a>
+      <router-link to="/" class="header-logo">Mr.li</router-link>
       <ul class="menu" id="nav">
         <li v-for="item in menuItems" :key="item.id">
-          <a :href="item.subItems ? 'javascript:void(0)' : item.url">
+          <router-link :to="item.subItems ? {} : item.url">
             {{ item.title }}
             <span v-if="item.subItems" class="arrow">
               🔜
-<!--              <lay-icon type="layui-icon-triangle-r"></lay-icon>-->
             </span>
-          </a>
+          </router-link>
 
           <ul v-if="item.subItems" class="sub-menu">
             <li v-for="subItem in item.subItems" :key="subItem.id">
-              <a :href="subItem.url">{{ subItem.title }}</a>
+              <router-link :to="subItem.url">{{ subItem.title }}</router-link>
             </li>
           </ul>
         </li>

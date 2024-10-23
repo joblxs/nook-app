@@ -6,8 +6,8 @@
     </lay-tooltip>
     <div class="navigation" :class="{ 'navigation-hidden': !isNavVisible }">
       <ul class="navigation-point">
-        <li><a href="/">首页</a></li>
-        <li><a href="/blog">博客</a></li>
+        <li><router-link to="/">首页</router-link></li>
+        <li><router-link to="/blog">博客</router-link></li>
       </ul>
       <div class="navigation-logo"><a href="/">Mr.li</a></div>
     </div>
