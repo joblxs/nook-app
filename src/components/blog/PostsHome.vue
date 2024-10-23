@@ -1,11 +1,8 @@
 <template>
   <!--导航-->
   <NavBlog />
-  <div class="container-fixed" style="margin-top: 90px">
-    <div class="col-content">
-      <div id="markdown-container"></div>
-    </div>
-    <div style="clear: both"></div>
+  <div class="container-fixed" :style="{ height: contentHeight + 'px' }">
+    <div id="markdown-container" class="col-content" ></div>
   </div>
   <!--底部-->
   <FooterHome />
@@ -16,11 +13,31 @@ import 'cherry-markdown/dist/cherry-markdown.css';
 import Cherry from 'cherry-markdown';
 import NavBlog from "@/components/blog/module/NavBlog.vue";
 import FooterHome from "@/components/module/FooterHome.vue";
+import { onMounted, onUnmounted, ref } from 'vue';
 
 export default {
   components: {
     FooterHome,
     NavBlog
+  },
+  setup() {
+    const contentHeight = ref(0);
+    const handleResize = () => {
+      const container = document.querySelector('.container').offsetHeight;
+      const footer = document.querySelector('.footer').offsetHeight;
+      contentHeight.value = window.innerHeight - container - footer - 40;
+    };
+    onMounted(() => {
+      handleResize(); // 初始化高度
+      window.addEventListener('resize', handleResize);
+    });
+
+    onUnmounted(() => {
+      window.removeEventListener('resize', handleResize);
+    });
+    return {
+      contentHeight
+    };
   },
   mounted() {
     new Cherry({
@@ -44,7 +61,7 @@ export default {
           updateLocationHash: false, // 要不要更新URL的hash
           defaultModel: 'full', // pure: 精简模式/缩略模式，只有一排小点； full: 完整模式，会展示所有标题
           showAutoNumber: false, // 是否显示自增序号
-          position: 'fixed', // 悬浮目录的悬浮方式。当滚动条在cherry内部时，用absolute；当滚动条在cherry外部时，用fixed
+          position: 'absolute', // 悬浮目录的悬浮方式。当滚动条在cherry内部时，用absolute；当滚动条在cherry外部时，用fixed
           cssText: '', // 自定义样式
         },
       }
@@ -59,16 +76,7 @@ export default {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-}
-
-.col-content {
-  float: left;
-  width: calc(100% - 300px - 20px);
-}
-
-.col-other {
-  float: right;
-  width: 300px
+  margin-top: 70px;
 }
 
 @media screen and (max-width: 1366px) {
@@ -78,9 +86,8 @@ export default {
 }
 
 @media screen and (max-width: 1024px) {
-  .col-content, .col-other {
+  .col-content {
     width: 100%;
-    float: none
   }
 
   .container-fixed {
@@ -89,7 +96,7 @@ export default {
 }
 
 @media screen and (max-width: 500px) {
-  .col-content, .col-other {
+  .col-content {
     padding: 0 0
   }
 }
