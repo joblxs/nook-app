@@ -8,7 +8,8 @@
           <a :href="item.subItems ? 'javascript:void(0)' : item.url">
             {{ item.title }}
             <span v-if="item.subItems" class="arrow">
-              <lay-icon type="layui-icon-triangle-r"></lay-icon>
+              🔜
+<!--              <lay-icon type="layui-icon-triangle-r"></lay-icon>-->
             </span>
           </a>
 
