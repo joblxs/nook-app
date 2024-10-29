@@ -1,5 +1,5 @@
 <template>
-  <object class="background-iframe" :data="backgroundIframeSrc" type="text/html" v-show="showBackground"></object>
+  <object class="background-iframe" :data="backgroundIframeSrc" type="text/html" v-if="showBackground"></object>
 
   <lay-tooltip position="left-start" content="切换主题">
     <lay-backtop @click="toggleTheme" :bottom="150" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="theme === 'dark' ? 'layui-icon-light' : 'layui-icon-moon'" disabled></lay-backtop>
