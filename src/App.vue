@@ -1,9 +1,9 @@
 <template>
   <FpsCounter />
-  <!--背景-->
-  <object :class="`background-iframe ${theme}`" :data="backgroundIframeSrc" type="text/html" v-show="showBackground"></object>
+  <!--主题-->
+  <ThemeSwitcher ref="themeSwitcher" />
 
-  <lay-config-provider :theme="theme">
+  <lay-config-provider :theme="themeSwitcher.theme">
     <keep-alive>
       <router-view />
     </keep-alive>
@@ -12,24 +12,18 @@
   <lay-tooltip position="left-start" content="返回顶部">
     <lay-backtop :bottom="200" circle size="small" bgcolor="#5FB878" iconSize="22" icon="layui-icon-top" ></lay-backtop>
   </lay-tooltip>
-
-  <lay-tooltip position="left-start" content="切换主题">
-    <lay-backtop @click="toggleTheme" :bottom="150" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="theme === 'dark' ? 'layui-icon-light' : 'layui-icon-moon'" disabled></lay-backtop>
-  </lay-tooltip>
-
-  <lay-tooltip position="left-start" :content="showBackground ? '关闭背景' : '打开背景'">
-    <lay-backtop @click="toggleBackground" :bottom="100" circle size="small" bgcolor="#5FB878" iconSize="22" :showHeight="0" :icon="showBackground ? 'layui-icon-eye-invisible' : 'layui-icon-eye'" disabled></lay-backtop>
-  </lay-tooltip>
 </template>
 
 <script>
-import {ref, onMounted } from 'vue';
+import {ref } from 'vue';
 import WOW from 'wow.js';
 import FpsCounter from './utils/FpsCounter.vue'
+import ThemeSwitcher from "@/utils/ThemeSwitcher.vue";
 
 export default {
   name: 'App',
   components: {
+    ThemeSwitcher,
     FpsCounter
   },
   mounted() {
@@ -44,103 +38,8 @@ export default {
     }).init();
   },
   setup() {
-    const theme = ref('light')
-    const backgroundIframeSrc = ref('/theme/background/BackgroundLight.html');
-    const showBackground = ref(true);
-
-    // 从localStorage加载主题设置
-    const loadThemeFromStorage = () => {
-      const savedData = localStorage.getItem('user-theme');
-      if (savedData) {
-        const { theme: savedTheme, expires } = JSON.parse(savedData);
-        const currentTime = new Date().getTime();
-        if (savedTheme && expires && expires > currentTime) {
-          applyTheme(savedTheme);
-        } else {
-          // 如果没有设置，或者设置已过期，则根据当前时间设置默认主题
-          const currentHour = new Date().getHours();
-          applyTheme(currentHour >= 6 && currentHour < 18 ? 'light' : 'dark');
-        }
-      } else {
-        // 如果没有设置，或者设置已过期，则根据当前时间设置默认主题
-        const currentHour = new Date().getHours();
-        applyTheme(currentHour >= 6 && currentHour < 18 ? 'light' : 'dark');
-      }
-    };
-    // 应用主题到页面
-    const applyTheme = (newTheme) => {
-      theme.value = newTheme;
-      backgroundIframeSrc.value = newTheme === 'light' ? '/theme/background/BackgroundLight.html' : '/theme/background/BackgroundDark.html';
-
-      // 移除旧的<style>元素
-      const currentLink = document.getElementById('dynamic-theme');
-      if (currentLink) {
-        document.head.removeChild(currentLink);
-      }
-      const link = document.createElement('link');
-      link.id = 'dynamic-theme';
-      link.rel = 'stylesheet';
-      link.href = `/theme/css/${newTheme}.css`;
-      document.head.appendChild(link);
-
-      // 保存主题设置到localStorage，并设置12小时后过期
-      const expires = new Date().getTime() + 12 * 60 * 60 * 1000; // 12小时后的时间戳
-      localStorage.setItem('user-theme', JSON.stringify({ theme: newTheme, expires }));
-    };
-
-    // 切换主题
-    const toggleTheme = () => {
-      const newTheme = theme.value === 'light' ? 'dark' : 'light';
-      applyTheme(newTheme);
-    };
-
-    const toggleBackground = () => {
-      const newShowBackground = !showBackground.value; // 切换背景显示状态
-      showBackground.value = newShowBackground;
-      // 保存背景显示状态到localStorage，并设置12小时后过期
-      const expires = new Date().getTime() + 12 * 60 * 60 * 1000; // 12小时后的时间戳
-      localStorage.setItem('background-show', JSON.stringify({ show: newShowBackground, expires }));
-    };
-
-    // 从localStorage加载背景显示状态
-    const loadBackgroundFromStorage = () => {
-      const savedData = localStorage.getItem('background-show');
-      if (savedData) {
-        const { show, expires } = JSON.parse(savedData);
-        const currentTime = new Date().getTime();
-        if (!show && expires && expires > currentTime) {
-          showBackground.value = show;
-        } else {
-          // 如果设置已过期或没有设置，则默认显示背景
-          showBackground.value = true;
-          localStorage.removeItem('background-show');
-        }
-      } else {
-        // 如果没有设置，则默认显示背景
-        showBackground.value = true;
-      }
-    };
-
-    // 清理localStorage中的过期主题设置
-    const clearExpiredItems = (key) => {
-      const savedData = localStorage.getItem(key);
-      if (savedData) {
-        const { expires } = JSON.parse(savedData);
-        const currentTime = new Date().getTime();
-        if (expires && expires < currentTime) {
-          localStorage.removeItem(key);
-        }
-      }
-    };
-
-    // 组件卸载时清理过期主题设置
-    onMounted(() => {
-      loadThemeFromStorage(); // 加载主题
-      loadBackgroundFromStorage(); // 加载背景显示状态
-      clearExpiredItems('user-theme');
-      clearExpiredItems('background-show');
-    });
-    return { theme, toggleTheme, backgroundIframeSrc, showBackground, toggleBackground };
+    const themeSwitcher  = ref('null')
+    return { themeSwitcher };
   }
 }
 // 使用防抖函数（debounce）来延迟处理 ResizeObserver 的回调函数，以避免频繁触发重排（reflow）或重绘（repaint）
